@@ -27,6 +27,16 @@ app.post('/api', (req, res) => {
   res.json({ message: `Received POST request on port ${port}`, data: req.body });
 });
 
+// Shutdown endpoint
+app.post('/shutdown', (req, res) => {
+  console.log('Shutting down server...');
+  res.send('Server is shutting down...');
+  server.close(() => {
+      console.log('Server closed gracefully.');
+      process.exit(0); // Exit with success code
+  });
+});
+
 const server = app.listen(port, () => {
   console.log(`Server running on http://localhost:${port}`);
 });
