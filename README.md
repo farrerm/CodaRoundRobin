@@ -1,7 +1,7 @@
 # Round Robin Router Take-home Assignment
 
 
-<span style="font-size: 24px;">This repo contains the code for our takehome assignment for Coda.   </span>
+<span style="font-size: 24px;">This repo contains the code for our take-home assignment for Coda.   </span>
 
 <span style="font-size: 24px;">There are two important files.  router.js has the code for the round robin router itself, while app.js has the code for the app server.  </span>
 
