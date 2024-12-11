@@ -114,31 +114,36 @@ const forwardRequest = (req, res, originalIndex) => {
 };
 
 // Health check function for backend servers
-const checkServerHealth = (server) => {
-    const options = {
-        hostname: new URL(server.url).hostname,
-        port: new URL(server.url).port,
-        path: '/health',
-        method: 'GET',
-    };
+const checkServerHealth = () => {
+    servers.forEach(server => {
+        const options = {
+            hostname: new URL(server.url).hostname,
+            port: new URL(server.url).port,
+            path: '/health',
+            method: 'GET',
+        };  
+    
+        const req = http.request(options, (res) => {
+            if (res.statusCode === 200) {
+                server.active = true; // Mark as active if healthy
+                console.log(`Server ${server.url} is online.`);
+            } else {
+                server.active = false; // Mark as inactive if not healthy
+                console.error(`Health check failed for ${server.url}: Status code ${res.statusCode}`);
+            }
+        });
 
-    const req = http.request(options, (res) => {
-        if (res.statusCode === 200) {
-            server.active = true; // Mark as active if healthy
-            console.log(`Server ${server.url} is online.`);
-        } else {
-            server.active = false; // Mark as inactive if not healthy
-            console.error(`Health check failed for ${server.url}: Status code ${res.statusCode}`);
-        }
+        req.on('error', () => {
+            server.active = false; // Mark as inactive on error
+            console.error(`Health check error for ${server.url}`);
+        });
+
+        req.end();
     });
-
-    req.on('error', () => {
-        server.active = false; // Mark as inactive on error
-        console.error(`Health check error for ${server.url}`);
-    });
-
-    req.end();
 };
+
+// Start periodic health checks every 5 seconds
+setInterval(checkServerHealth, 5000);
 
 // Start the server
 app.listen(PORT, () => {
