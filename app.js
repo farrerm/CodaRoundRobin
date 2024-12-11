@@ -21,8 +21,12 @@ app.use((req, res, next) => {
   next(); // Proceed to the next middleware or route handler
 });
 
+// Health check endpoint
+app.get('/health', (req, res) => {
+  res.status(200).json({ status: 'UP' }); // Respond with a 200 OK status
+});
+
 app.post('/api', (req, res) => {
-  
   // Handle POST requests here
   res.json({ message: `Received POST request on port ${port}`, data: req.body });
 });
