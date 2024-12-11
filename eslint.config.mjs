@@ -17,8 +17,8 @@ const config = {
     prettier, // Define Prettier as a plugin object
   },
   rules: {
-    'prettier/prettier': 'error', // Treat Prettier issues as ESLint errors
-    'no-undef': 'error', // Ensure no undefined variables are used
+    "prettier/prettier": "error", // Treat Prettier issues as ESLint errors
+    "no-undef": "error", // Ensure no undefined variables are used
   },
 };
 
